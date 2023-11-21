@@ -22,15 +22,19 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	// JPA
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	// MariaDB
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
 
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	
+	
 	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('bootBuildImage') {
