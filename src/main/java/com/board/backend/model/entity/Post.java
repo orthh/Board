@@ -2,6 +2,7 @@ package com.board.backend.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,14 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "POST")
 public class Post extends BaseEntity {
@@ -45,7 +49,7 @@ public class Post extends BaseEntity {
   @Comment("작성자ID")
   private String regstrId;
 
-  @OneToMany(mappedBy = "post")
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
   private List<PostTag> postTags;
 
   @Builder

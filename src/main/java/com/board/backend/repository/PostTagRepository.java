@@ -1,6 +1,11 @@
 package com.board.backend.repository;
 
 import com.board.backend.model.entity.PostTag;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.board.backend.model.entity.Tag;
 
-public interface PostTagRepository extends JpaRepository<PostTag, Integer> {}
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface PostTagRepository extends JpaRepository<PostTag, Integer> {
+  public List<PostTag> findAllByTag(Tag tag);
+}

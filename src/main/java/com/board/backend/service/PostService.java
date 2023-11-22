@@ -1,6 +1,9 @@
 package com.board.backend.service;
 
+import com.board.backend.dto.PostAndTagsResDto;
 import com.board.backend.dto.PostRegDto;
+import com.board.backend.dto.PostResDto;
+import com.board.backend.dto.TagResDto;
 import com.board.backend.model.entity.BoardDef;
 import com.board.backend.model.entity.Post;
 import com.board.backend.model.entity.PostTag;
@@ -9,6 +12,7 @@ import com.board.backend.repository.DefRepository;
 import com.board.backend.repository.PostRepository;
 import com.board.backend.repository.PostTagRepository;
 import com.board.backend.repository.TagRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0
  * @since 2023-11.21
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -50,19 +53,73 @@ public class PostService {
 
     Post post = postRepository.save(postRegDto.toEntity(boardDef));
 
-    for (String tag : tags) {
+    List<PostTag> postTags = new ArrayList<>();
+    for (String tagNo : tags) {
       try {
         Tag t =
             tagRepository
-                .findById(Integer.parseInt(tag))
+                .findById(Integer.parseInt(tagNo))
                 .orElseThrow(() -> new RuntimeException("해당하는 Tag가 없습니다."));
         PostTag postTag = PostTag.builder().post(post).boardDef(boardDef).tag(t).build();
-        postTagRepository.save(postTag);
+        postTags.add(postTag);
       } catch (NumberFormatException e) {
-        throw new IllegalArgumentException("게시물 등록중 숫자로만 된 태그가 와야합니다.");
+        throw new IllegalArgumentException("게시물 등록중 숫자로만 된 태그ID가 와야합니다. tagNo = " + tagNo);
       }
     }
+    postTagRepository.saveAll(postTags);
 
     return post.getPostNo();
+  }
+
+  /**
+   * 게시물 수정
+   *
+   * @param postNo
+   * @param postRegDto
+   * @return postNo
+   */
+  @Transactional
+  public int updatePost(int postNo, PostRegDto postRegDto) {
+    Post post =
+        postRepository
+            .findById(postNo)
+            .orElseThrow(() -> new IllegalArgumentException("해당하는 Post가 없습니다."));
+    post.setPostCn(postRegDto.getPostCn());
+    post.setPostSj(postRegDto.getPostSj());
+    post.setRegstrId(postRegDto.getRegstrId());
+    return postNo;
+  }
+
+  /**
+   * 태그에 해당하는 게시글 조회
+   *
+   * @param tagNo
+   * @return List<PostResDto>
+   */
+  public List<PostResDto> getPostsByTagNo(int tagNo) {
+    Tag tag =
+        tagRepository
+            .findById(tagNo)
+            .orElseThrow(() -> new IllegalArgumentException("해당하는 Tag가 없습니다."));
+    List<PostTag> postTags = postTagRepository.findAllByTag(tag);
+    List<PostResDto> postResDtos = new ArrayList<>();
+
+    for (PostTag postTag : postTags) {
+      postResDtos.add(new PostResDto(postTag.getPost()));
+    }
+
+    return postResDtos;
+  }
+
+  /**
+   * 게시글 삭제 ( 연관된 게시물 태그도 함께 )
+   * 
+   * @param postNo
+   * @return 삭제된 게시물 번호
+   */
+  @Transactional
+  public Integer deletePost(String postNo) {
+    postRepository.deleteById(Integer.parseInt(postNo));
+    return Integer.parseInt(postNo);
   }
 }

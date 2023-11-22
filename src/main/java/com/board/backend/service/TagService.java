@@ -40,7 +40,7 @@ public class TagService {
   }
 
   /**
-   * 태그ID를기반으로 태그 조회
+   * 태그ID를 기반으로 태그 조회
    *
    * @param tagNo
    * @return Tag
