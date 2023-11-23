@@ -11,7 +11,10 @@ SpringBoot + SpringDataJPA + MariaDB / Swagger
 - 백엔드에 집중해 백엔드개발에 주력
 
 ## 주요 기능
-게시판 - 게시글에 태그 여러개 저장, 게시글 불러올 시 태그와 함께 조회
+- 게시판 분류정보 : 조회, 등록, 세부조회(해당 분류에 따른 게시물 함께 태그배열 포함)
+- 게시물 : 게시물 수정, 삭제, 등록, 조회
+- 태그 : 태그 등록, 삭제
+- Swagger를 통한 API 문서 자동화
 
 ## ERD
 ![image](https://github.com/orthh/Board/assets/107793363/1d2d6a82-305c-44d2-a7c2-9214769ad725)
