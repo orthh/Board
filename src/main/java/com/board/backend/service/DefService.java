@@ -63,14 +63,18 @@ public class DefService {
    * @return List<PostAndTagsResDto>
    */
   public List<PostAndTagsResDto> getDefWithBoard(String boardCd) {
+
+    // 게시물 분류 조회
     BoardDef boardDef =
         defRepository
             .findById(boardCd)
             .orElseThrow(() -> new IllegalArgumentException("해당하는 게시판코드가 없습니다."));
+    // 게시물 분류에 해당하는 게시물 조회
     List<Post> posts = boardDef.getPosts();
 
     List<PostAndTagsResDto> resList = new ArrayList<>();
     for (Post post : posts) {
+      // Dto 에 게시물과 태그리스트 연결
       List<PostTag> postTags = post.getPostTags();
       PostAndTagsResDto dto =
           PostAndTagsResDto.builder()

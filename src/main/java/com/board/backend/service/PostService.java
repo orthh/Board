@@ -51,8 +51,10 @@ public class PostService {
             .findById(postRegDto.getBoardCd())
             .orElseThrow(() -> new IllegalArgumentException("해당하는 BoardDef가 없습니다."));
 
+    // 게시물 저장
     Post post = postRepository.save(postRegDto.toEntity(boardDef));
 
+    // 게시물 태그 저장 로직
     List<PostTag> postTags = new ArrayList<>();
     for (String tagNo : tags) {
       try {
@@ -101,12 +103,12 @@ public class PostService {
         tagRepository
             .findById(tagNo)
             .orElseThrow(() -> new IllegalArgumentException("해당하는 Tag가 없습니다."));
+    // 태그에 해당하는 게시물 태그검색
     List<PostTag> postTags = postTagRepository.findAllByTag(tag);
-    // List<PostResDto> postResDtos = new ArrayList<>();
-    List<PostAndTagsResDto> response = new ArrayList<>();
 
+    // 게시물에 태그배열을 연결하는 로직
+    List<PostAndTagsResDto> response = new ArrayList<>();
     for (PostTag postTag : postTags) {
-      // postResDtos.add(new PostResDto(postTag.getPost()));
       Post post = postTag.getPost();
       List<PostTag> newPostTags = post.getPostTags();
       PostAndTagsResDto postAndTagsResDto =
