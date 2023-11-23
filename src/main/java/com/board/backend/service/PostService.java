@@ -91,31 +91,48 @@ public class PostService {
   }
 
   /**
-   * 태그에 해당하는 게시글 조회
+   * 태그에 해당하는 게시물 조회 ( 태그 배열과 함께 조회 )
    *
    * @param tagNo
    * @return List<PostResDto>
    */
-  public List<PostResDto> getPostsByTagNo(int tagNo) {
+  public List<PostAndTagsResDto> getPostsByTagNo(int tagNo) {
     Tag tag =
         tagRepository
             .findById(tagNo)
             .orElseThrow(() -> new IllegalArgumentException("해당하는 Tag가 없습니다."));
     List<PostTag> postTags = postTagRepository.findAllByTag(tag);
-    List<PostResDto> postResDtos = new ArrayList<>();
+    // List<PostResDto> postResDtos = new ArrayList<>();
+    List<PostAndTagsResDto> response = new ArrayList<>();
 
     for (PostTag postTag : postTags) {
-      postResDtos.add(new PostResDto(postTag.getPost()));
+      // postResDtos.add(new PostResDto(postTag.getPost()));
+      Post post = postTag.getPost();
+      List<PostTag> newPostTags = post.getPostTags();
+      PostAndTagsResDto postAndTagsResDto =
+          PostAndTagsResDto.builder()
+              .postNo(post.getPostNo())
+              .postSj(post.getPostSj())
+              .postCn(post.getPostCn())
+              .regstrId(post.getRegstrId())
+              .build();
+      List<TagResDto> tagResDtos = new ArrayList<>();
+      for (PostTag newPostTag : newPostTags) {
+        TagResDto tagResDto = new TagResDto(newPostTag.getTag());
+        tagResDtos.add(tagResDto);
+      }
+      postAndTagsResDto.setTags(tagResDtos);
+      response.add(postAndTagsResDto);
     }
 
-    return postResDtos;
+    return response;
   }
 
   /**
-   * 게시글 삭제 ( 연관된 게시물 태그도 함께 )
-   * 
+   * 게시물 삭제 ( Cascade - 연관된 게시물 태그도 함께 삭제 )
+   *
    * @param postNo
-   * @return 삭제된 게시물 번호
+   * @return postNo
    */
   @Transactional
   public Integer deletePost(String postNo) {

@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,5 +40,13 @@ public class TagController {
     log.info("태그 등록 with tag = {}", tagRegDto.getTag());
     int tagNo = tagService.regTag(tagRegDto);
     return ResponseEntity.ok().body(tagNo);
+  }
+
+  @Operation(summary = "태그 삭제 API", description = "요청을 받아 삭제 후 삭제된 태그No를 반환합니다.")
+  @DeleteMapping("/tag/{tagNo}")
+  public ResponseEntity<Integer> deleteTag(@PathVariable int tagNo) {
+    log.info("태그 삭제 with tagNo = {}", tagNo);
+    int deletedTagNo = tagService.deleteTag(tagNo);
+    return ResponseEntity.ok().body(deletedTagNo);
   }
 }

@@ -35,12 +35,15 @@ public class TagService {
     BoardDef boardDef =
         defRepository
             .findById(tagRegDto.getBoardCd())
-            .orElseThrow(() -> new IllegalArgumentException("해당 게시판분류정보가 없습니다. boardCd: " + tagRegDto.getBoardCd()));
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "해당 게시판분류정보가 없습니다. boardCd: " + tagRegDto.getBoardCd()));
     return tagRepository.save(tagRegDto.toEntity(boardDef)).getTagNo();
   }
 
   /**
-   * 태그ID를 기반으로 태그 조회
+   * 태그No를 기반으로 태그 조회
    *
    * @param tagNo
    * @return Tag
@@ -49,5 +52,17 @@ public class TagService {
     return tagRepository
         .findById(tagNo)
         .orElseThrow(() -> new IllegalArgumentException("해당 태그가 없습니다. tagNo: " + tagNo));
+  }
+
+  /**
+   * 태그No를 기반으로 태그 삭제 ( Cascade - 연관된 게시물태그도 함께 삭제 )
+   *
+   * @param tagNo
+   * @return tagNo
+   */
+  @Transactional
+  public Integer deleteTag(int tagNo) {
+    tagRepository.deleteById(tagNo);
+    return tagNo;
   }
 }

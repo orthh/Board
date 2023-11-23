@@ -41,7 +41,7 @@ public class DefController {
     return ResponseEntity.ok().body(boardCd);
   }
 
-  @Operation(summary = "모든 게시판 분류정보 조회")
+  @Operation(summary = "모든 게시판 분류정보 조회", description = "조회 후 게시판 분류정보 배열을 반환합니다.")
   @GetMapping("/def")
   public ResponseEntity<List<DefDto>> getAllDef() {
     log.info("모든 게시판 분류정보 조회 시작");

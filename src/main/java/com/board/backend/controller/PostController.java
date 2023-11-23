@@ -43,7 +43,7 @@ public class PostController {
   @PostMapping("/post")
   public ResponseEntity<Integer> regPost(@RequestBody PostAndTagsDto postAndTagsDto) {
     log.info("게시물 등록 with regstrId = {}", postAndTagsDto.getPost().getRegstrId());
-    int postNo = postService.regPost(postAndTagsDto.getPost(), postAndTagsDto.getTags());
+    int postNo = postService.regPost(postAndTagsDto.getPost(), postAndTagsDto.getTagNos());
     return ResponseEntity.ok().body(postNo);
   }
 
@@ -56,15 +56,15 @@ public class PostController {
     return ResponseEntity.ok().body(udtPostNo);
   }
 
-  @Operation(summary = "tagNo에 해당하는 게시물 조회 API")
+  @Operation(summary = "태그에 해당하는 게시물 조회 API", description = "태그에 해당하는 게시물 배열을 반환합니다.")
   @GetMapping("/post")
-  public ResponseEntity<List<PostResDto>> getPostsByTagNo(@RequestParam String tagNo) {
+  public ResponseEntity<List<PostAndTagsResDto>> getPostsByTagNo(@RequestParam String tagNo) {
     log.info("게시글 조회 시작 with tagNo = {}", tagNo);
-    List<PostResDto> posts = postService.getPostsByTagNo(Integer.parseInt(tagNo));
+    List<PostAndTagsResDto> posts = postService.getPostsByTagNo(Integer.parseInt(tagNo));
     return ResponseEntity.ok(posts);
   }
 
-  @Operation(summary = "게시글 삭제 API")
+  @Operation(summary = "게시글 삭제 API", description = "삭제 후 삭제된 게시글 번호를 반환합니다.")
   @DeleteMapping("/post/{postNo}")
   public ResponseEntity<Integer> deletePost(@PathVariable String postNo) {
     log.info("게시글 삭제 with postNo = {}", postNo);

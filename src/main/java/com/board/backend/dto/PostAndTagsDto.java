@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostAndTagsDto {
   private PostRegDto post;
-  private List<String> tags;
+  private List<String> tagNos;
 }

@@ -1,6 +1,7 @@
 package com.board.backend.model.entity;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Tag {
   @JoinColumn(name = "BOARD_CD")
   private BoardDef boardDef;
 
-  @OneToMany(mappedBy = "tag")
+  @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
   private List<PostTag> postTags;
 
   @Builder

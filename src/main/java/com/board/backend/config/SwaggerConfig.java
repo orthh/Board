@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 스웨거 설정 파일 URL : http://localhost:8082/swagger-ui/index.html
+ * 스웨거 설정 파일 
+ * URL : http://localhost:8082/swagger-ui/index.html
  *
  * @author 김혁
  * @version 1.0

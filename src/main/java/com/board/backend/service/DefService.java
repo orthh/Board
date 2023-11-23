@@ -82,7 +82,7 @@ public class DefService {
 
       List<TagResDto> tagResDtos = new ArrayList<>();
       for (PostTag postTag : postTags) {
-        TagResDto tagResDto = new TagResDto(postTag);
+        TagResDto tagResDto = new TagResDto(postTag.getTag());
         tagResDtos.add(tagResDto);
       }
       dto.setTags(tagResDtos);

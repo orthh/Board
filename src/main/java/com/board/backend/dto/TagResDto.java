@@ -1,17 +1,18 @@
 package com.board.backend.dto;
 
 import com.board.backend.model.entity.PostTag;
+import com.board.backend.model.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 public class TagResDto {
-  private int boardTagId;
+  private String tagNo;
   private String tag;
 
-  public TagResDto(PostTag postTag) {
-    this.boardTagId = postTag.getBoardTagId();
-    this.tag = postTag.getTag().getTag();
+  public TagResDto(Tag tag) {
+    this.tagNo = String.valueOf(tag.getTagNo());
+    this.tag = tag.getTag();
   }
 }
