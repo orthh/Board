@@ -49,7 +49,7 @@ public class DefController {
     return ResponseEntity.ok().body(defDtoList);
   }
 
-  @Operation(summary = "게시판 분류정보 세부조회", description = "게시판 분류 정보에 해당하는 게시물정보를 반환합니다")
+  @Operation(summary = "게시판 분류정보에 따른 게시물 조회", description = "게시판 분류 정보에 해당하는 게시물정보를 반환합니다")
   @GetMapping("/def/{boardCd}")
   public ResponseEntity<List<PostAndTagsResDto>> getDefWithBoard(@PathVariable String boardCd) {
     log.info("게시판 분류정보 세부조회 시작 with boardCd = {}", boardCd);

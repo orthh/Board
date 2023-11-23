@@ -93,6 +93,37 @@ public class PostService {
   }
 
   /**
+   * 게시물 조회
+   *
+   * @param postNo
+   * @return PostAndTagsResDto
+   */
+  public PostAndTagsResDto getPostById(int postNo) {
+    // 게시물 검색
+    Post post =
+        postRepository
+            .findById(postNo)
+            .orElseThrow(() -> new IllegalArgumentException("해당하는 Post가 없습니다."));
+    List<PostTag> postTags = post.getPostTags();
+
+    // Dto 에 태그배열 추가하는 로직
+    List<TagResDto> tagResDtos = new ArrayList<>();
+    for (PostTag postTag : postTags) {
+      TagResDto tagResDto = new TagResDto(postTag.getTag());
+      tagResDtos.add(tagResDto);
+    }
+    PostAndTagsResDto postAndTagsResDto =
+        PostAndTagsResDto.builder()
+            .postNo(post.getPostNo())
+            .postSj(post.getPostSj())
+            .postCn(post.getPostCn())
+            .regstrId(post.getRegstrId())
+            .build();
+    postAndTagsResDto.setTags(tagResDtos);
+    return postAndTagsResDto;
+  }
+
+  /**
    * 태그에 해당하는 게시물 조회 ( 태그 배열과 함께 조회 )
    *
    * @param tagNo

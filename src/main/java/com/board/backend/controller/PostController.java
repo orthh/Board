@@ -56,7 +56,15 @@ public class PostController {
     return ResponseEntity.ok().body(udtPostNo);
   }
 
-  @Operation(summary = "태그에 해당하는 게시물 조회 API", description = "태그에 해당하는 게시물 배열을 반환합니다.")
+  @Operation(summary = "게시물 조회 API", description = "게시물 번호로 게시물을 조회합니다.")
+  @GetMapping("/post/{postNo}")
+  public ResponseEntity<PostAndTagsResDto> getPostById(@PathVariable int postNo) {
+    log.info("게시글 조회 시작 with postNo = {}", postNo);
+    PostAndTagsResDto post = postService.getPostById(postNo);
+    return ResponseEntity.ok(post);
+  }
+
+  @Operation(summary = "태그에 해당하는 게시물 조회 API", description = "태그에 해당하는 게시물배열을 조회합니다.")
   @GetMapping("/post")
   public ResponseEntity<List<PostAndTagsResDto>> getPostsByTagNo(@RequestParam String tagNo) {
     log.info("게시글 조회 시작 with tagNo = {}", tagNo);
