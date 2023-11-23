@@ -1,6 +1,9 @@
 # Board
 게시판 with 태그
 
+## 프로젝트 기간
+2023.11.21 - 2023.11.23
+
 ## 사용기술
 SpringBoot + SpringDataJPA + MariaDB / Swagger
 
